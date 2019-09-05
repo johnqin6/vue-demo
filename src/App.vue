@@ -16,9 +16,6 @@ export default {
   },
   components: {
     dHeader
-  },
-  mounted () {
-    console.log(this.$route.name)
   }
 }
 </script>

@@ -20,6 +20,11 @@ export default new Router({
       path: '/singer',
       name: '歌手列表',
       component: () => import('./views/singers/singerList.vue')
+    },
+    {
+      path: '/city',
+      name: '城市选择组件',
+      component: () => import('./views/city/city.vue')
     }
   ]
 })

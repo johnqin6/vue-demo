@@ -8,7 +8,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: '案例首页',
       component: Home
     },
     {
@@ -18,7 +18,7 @@ export default new Router({
     },
     {
       path: '/singer',
-      name: 'singer',
+      name: '歌手列表',
       component: () => import('./views/singers/singerList.vue')
     }
   ]

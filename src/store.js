@@ -1,16 +1,38 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import singers from './mock/data/singers'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
+const types = {
+  GETSINGERLIST: 'getSingerList'
+}
 
-  },
-  mutations: {
+const state = {
+  singerList: []
+}
 
-  },
-  actions: {
-
+const getters = {
+  singerList: state => {
+    return state.singerList
   }
+}
+
+const mutations = {
+  [types.GETSINGERLIST] (state, singerList) {
+    state.singerList = singerList
+  }
+}
+
+const actions = {
+  getSingerList ({ commit }) {
+    commit(types.GETSINGERLIST, singers)
+  }
+}
+
+export default new Vuex.Store({
+  state,
+  getters,
+  mutations,
+  actions
 })

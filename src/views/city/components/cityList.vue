@@ -1,6 +1,6 @@
 <template>
   <section class="city-list" ref="wrapper">
-    <div>
+    <!-- <div ref="wrapper"> -->
       <!-- 当前城市 -->
       <panel title="当前城市">
         <d-button>南阳</d-button>
@@ -25,7 +25,7 @@
           <span class="letter">{{letter}}</span>
         </div>
       </transition>
-    </div>
+    <!-- </div> -->
   </section>
 </template>
 <script>
@@ -86,6 +86,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+
 .item {
   margin: 0 10px 10px 0;
 }

@@ -1,10 +1,10 @@
 <template>
   <div class="code-nav">
     <ul>
-      <li class="item"
-        v-for="item in letters" :key="item"
+      <li class="item" :class="{'active': currentIndex === index}"
+        v-for="(item,index) in letters" :key="item"
         :ref="item"
-        @click="handleLetterClick"
+        @click="handleLetterClick($event, index)"
         @touchstart.stop="handleTouchStart"
         @touchmove.stop.prevent="handleTouchMove"
         @touchend.stop="handleTouchEnd"
@@ -20,7 +20,8 @@ export default {
   },
   data () {
     return {
-      touchStatus: false
+      touchStatus: false,
+      currentIndex: 0
     }
   },
   computed: {
@@ -36,13 +37,15 @@ export default {
     this.startY = this.$refs['A'][0].offsetTop
   },
   methods: {
-    handleLetterClick (e) {
+    handleLetterClick (e, index) {
+      this.currentIndex = index
       this.$bus.$emit('change', e.target.innerText)
     },
     handleTouchStart () {
       this.touchStatus = true
     },
     handleTouchMove (e) {
+      console.log(e)
       if (this.touchStatus) {
         // 函数节流
         if (this.timer) {
@@ -52,6 +55,7 @@ export default {
           this.startY = this.$refs['A'][0].offsetTop
           const touchY = e.touches[0].clientY - 40
           const index = Math.floor((touchY - this.startY) / 20)
+          console.log(index)
           if (index >= 0 && index < this.letters.length) {
             this.$bus.$emit('change', this.letters[index])
           }
@@ -79,6 +83,9 @@ export default {
       text-align: center;
       line-height: 20px;
       font-size: 12px;
+    }
+    .active {
+      color: orange;
     }
   }
 </style>

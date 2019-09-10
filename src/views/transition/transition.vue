@@ -31,6 +31,7 @@
     </transition>
     <div class="list">
       <h2>列表过渡</h2>
+      <button @click="suffle">shuffle</button>
       <button @click="add">add</button>
       <button @click="remove">remove</button>
       <transition-group name="list" tag="p">
@@ -39,10 +40,36 @@
         </span>
       </transition-group>
     </div>
+    <div class="list">
+      <h2>列表的排序过渡</h2>
+      <button @click="suffle">suffle</button>
+      <transition-group name="flip-list" tag="ul">
+        <li v-for="item in items" :key="item">
+          {{item}}
+        </li>
+      </transition-group>
+    </div>
+    <div class="staggered-list-demo">
+      <input v-model="query" />
+      <transition-group
+        name="staggered-fade"
+        :css="false"
+        @before-enter="beforeEnter"
+        @enter="enter"
+        @leave="leave"
+        tag="ul">
+        <li
+          v-for="(item,index) in computedList" :key="item.msg"
+          :data-index="index">
+          {{ item.msg }}
+        </li>
+      </transition-group>
+    </div>
   </div>
 </template>
 <script>
 import testA from './component/testA'
+// import Velocity from 'velocity'
 
 export default {
   data () {
@@ -53,10 +80,53 @@ export default {
       isShow2: true,
       radioVal: 'A',
       items: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      nextNum: 10
+      nextNum: 10,
+      query: '',
+      list: [
+        { msg: 'Bruce Lee' },
+        { msg: 'Jackie Chan' },
+        { msg: 'Chuck Norris' },
+        { msg: 'Jet Li' },
+        { msg: 'Kung Fury' }
+      ]
+    }
+  },
+  computed: {
+    computedList () {
+      return this.list.filter(item => {
+        return item.msg.toLowerCase().indexOf(this.query.toLowerCase()) !== -1
+      })
     }
   },
   methods: {
+    beforeEnter (el) {
+      el.style.opacity = 0
+      el.style.height = 0
+    },
+    enter (el, done) {
+      let delay = el.dataset.index * 150
+      setTimeout(() => {
+        // Velocity(
+        //   el,
+        //   { opacity: 1, height: '1.6em' },
+        //   { complete: done }
+        // )
+        el.style.opacity = 1
+        el.style.height = '1.6em'
+      }, delay)
+    },
+    leave (el, done) {
+      let delay = el.dataset.index * 150
+      setTimeout(() => {
+        // Velocity(
+        //   el,
+        //   { opacity: 0, height: 0 },
+        //   { complete: done }
+        // )
+        el.style.opacity = 0
+        el.style.height = 0
+      }, delay)
+    },
     randomIndex () {
       return Math.floor(Math.random() * this.items.length)
     },
@@ -65,6 +135,15 @@ export default {
     },
     remove () {
       this.items.splice(this.randomIndex(), 1)
+    },
+    suffle () {
+      this.items = this.suffleArr(this.items)
+    },
+    // 打乱数组顺序
+    suffleArr (arr) {
+      let _arr = [...arr]
+      _arr.sort(() => Math.random() - 0.5)
+      return _arr
     }
   },
   components: {
@@ -142,16 +221,25 @@ export default {
   }
 }
 
+.list {
+  margin-left: 20px;
+}
 .list-item {
   display: inline-block;
   margin-right: 10px;
-}
-.list-enter-active, .list-leave-active {
   transition: all 1s;
+}
+.list-leave-active {
+  // transition: all 1s;
+  position: absolute;
 }
 .list-enter, .list-leave-to
 /* .list-leave-active for below version 2.1.8 */ {
   opacity: 0;
   transform: translateY(30px);
+}
+
+.flip-list-move {
+  transition: all 1s;
 }
 </style>

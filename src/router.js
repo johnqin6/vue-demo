@@ -25,6 +25,16 @@ export default new Router({
       path: '/city',
       name: '城市选择组件',
       component: () => import('./views/city/city.vue')
+    },
+    {
+      path: '/transition',
+      name: '过渡示例',
+      component: () => import('./views/transition/transition.vue')
+    },
+    {
+      path: '/dentalSelection',
+      name: '口腔检查组件',
+      component: () => import('./views/dentalSelection/dentalSelection')
     }
   ]
 })

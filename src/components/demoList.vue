@@ -16,7 +16,9 @@ export default {
     return {
       demoList: [
         { title: '歌手列表', desc: '字母导航，图片懒加载', path: '/singer' },
-        { title: '城市列表', desc: '城市信息展示, 字母导航', path: '/city' }
+        { title: '城市列表', desc: '城市信息展示, 字母导航', path: '/city' },
+        { title: '过渡示例', desc: '过渡示例', path: '/transition' },
+        { title: '口腔检查组件', desc: '口腔检查组件', path: '/dentalSelection' }
       ]
     }
   },

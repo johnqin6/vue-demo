@@ -27,6 +27,11 @@ export default new Router({
       component: () => import('./views/transition/transition.vue')
     },
     {
+      path: '/echart',
+      name: 'echart示例',
+      component: () => import('./views/echarts')
+    },
+    {
       path: '/dentalSelection',
       name: '口腔检查组件',
       component: () => import('./views/dentalSelection/dentalSelection')

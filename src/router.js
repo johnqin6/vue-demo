@@ -32,6 +32,11 @@ export default new Router({
       component: () => import('./views/echarts')
     },
     {
+      path: '/date',
+      name: '时间组件示例',
+      component: () => import('./views/date/date')
+    },
+    {
       path: '/dentalSelection',
       name: '口腔检查组件',
       component: () => import('./views/dentalSelection/dentalSelection')

@@ -9,7 +9,7 @@
       <i class="icon icon-date"></i>
     </div>
     <transition name="slide">
-      <div class="date-picker-container" v-show="visible">
+      <div class="date-picker-container" v-if="visible">
         <date-picker-wrap v-model="curValue"></date-picker-wrap>
       </div>
     </transition>
@@ -49,9 +49,6 @@ export default {
     this.curValue = this.value
   },
   methods: {
-    getValue (date) {
-      
-    },
     show () {
       this.visible = true
     },

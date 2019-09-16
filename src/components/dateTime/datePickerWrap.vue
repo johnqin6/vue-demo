@@ -1,12 +1,12 @@
 <template>
   <div class="date-picker-wrap">
     <div class="date-header">
-      <span>&lt;</span>
-      <span>&lt;&lt;</span>
+      <span @click="reduceMonth">&lt;</span>
+      <span @click="reduceYear">&lt;&lt;</span>
       <span>{{ time.year }}年</span>
       <span>{{ time.month + 1 }}月</span>
-      <span>&gt;&gt;</span>
-      <span>&gt;</span>
+      <span @click="addYear">&gt;&gt;</span>
+      <span @click="addMonth">&gt;</span>
     </div>
     <div class="day-container">
       <div class="row week-row">
@@ -49,15 +49,7 @@ export default {
         year: null,
         month: null
       },
-      curDate: new Date
-    }
-  },
-  watch: {
-    value (newVal) {
-      this.curDate = newVal
-      this.curDate = this.value
-      console.log(this.curDate)
-      this.setDayList()
+      curDate: null
     }
   },
   mounted () {
@@ -66,7 +58,7 @@ export default {
   },
   methods: {
     isChoosed (date) {
-      let { year, month, day } = getYearMonthDay(this.curDate)
+      let { year, month, day } = getYearMonthDay(this.value)
       let { year: y, month: m, day: d } = getYearMonthDay(date)
       return y === year && month === m && day === d
     },
@@ -74,10 +66,36 @@ export default {
       console.log(date)
       this.$emit('input', date)
     },
+    reduceMonth () {
+      if (this.time.month > 0) {
+        this.time.month = this.time.month - 1
+      } else {
+        this.time.year = this.time.year - 1
+        this.time.month = 11
+      }
+      this.curDate = getDate(this.time.year, this.time.month, 2)
+      this.setDayList()
+    },
+    addMonth () {
+      if (this.time.month < 11) {
+        this.time.month = this.time.month + 1
+      } else {
+        this.time.year = this.time.year + 1
+        this.time.month = 0
+      }
+    },
+    reduceYear () {
+      this.time.year--
+    },
+    addYear () {
+      this.time.year++
+    },
     // 建立时间数组
     setDayList () {
+      console.log(this.curDate)
       // 得到传入的时间或当前时间的年月
       let { year, month } = getYearMonthDay(this.curDate)
+      console.log(year, month)
       this.time = getYearMonthDay(this.curDate)
       // 获取当月第一天
       let curFirstDay = getDate(year, month, 1)
@@ -92,7 +110,7 @@ export default {
     },
     // 判断是否是当月
     isCurMonth (date) {
-      let { year, month } = getYearMonthDay(this.curDate)
+      let { year, month } = getYearMonthDay(this.value)
       let { year: y, month: m } = getYearMonthDay(date)
       return y === year && month === m
     },
@@ -121,6 +139,8 @@ export default {
     line-height: 30px;
     justify-content: space-around;
     margin-bottom: 10px;
+    cursor: pointer;
+    user-select: none;
   }
   .row {
     display: flex;

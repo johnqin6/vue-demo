@@ -3,8 +3,8 @@
     <div class="date-header">
       <span>&lt;</span>
       <span>&lt;&lt;</span>
-      <span>{{ year }}年</span>
-      <span>{{ month + 1 }}月</span>
+      <span>{{ time.year }}年</span>
+      <span>{{ time.month + 1 }}月</span>
       <span>&gt;&gt;</span>
       <span>&gt;</span>
     </div>
@@ -17,6 +17,12 @@
       <div class="row" v-for="row in 6" :key="row">
         <span
           class="col"
+          :class="[
+            { 'notCurMonth': !isCurMonth(dayList[(row - 1) * 7 + (col - 1)]) },
+            { 'today': isToday(dayList[(row - 1) * 7 + (col - 1)]) },
+            { 'isChoosed': isChoosed(dayList[(row - 1) * 7 + (col - 1)])}
+          ]"
+          @click="chooseDate(dayList[(row - 1) * 7 + (col - 1)])"
           v-for="col in 7" :key="col + 'a'">
           {{ getCurColDate(row, col) }}
         </span>
@@ -25,6 +31,8 @@
   </div>
 </template>
 <script>
+import { getYearMonthDay, getDate } from '../../utils/util'
+
 export default {
   name: 'datePickerWrap',
   props: {
@@ -37,50 +45,67 @@ export default {
     return {
       weekList: ['日', '一', '二', '三', '四', '五', '六'],
       dayList: [],
-      year: '',
-      month: ''
+      time: {
+        year: null,
+        month: null
+      },
+      curDate: new Date
+    }
+  },
+  watch: {
+    value (newVal) {
+      this.curDate = newVal
+      this.curDate = this.value
+      console.log(this.curDate)
+      this.setDayList()
     }
   },
   mounted () {
+    this.curDate = this.value
     this.setDayList()
   },
   methods: {
+    isChoosed (date) {
+      let { year, month, day } = getYearMonthDay(this.curDate)
+      let { year: y, month: m, day: d } = getYearMonthDay(date)
+      return y === year && month === m && day === d
+    },
+    chooseDate (date) {
+      console.log(date)
+      this.$emit('input', date)
+    },
     // 建立时间数组
     setDayList () {
       // 得到传入的时间或当前时间的年月
-      let { year, month } = this.getYearMonthDay(this.value)
-      this.year = year
-      this.month = month
-      // 得到当月有多少天
-      let curMonthDays = new Date(year, month + 1, 0).getDate()
-      // 得到当月第一天星期几
-      let curFirstDay = new Date(year, month + 1, 1).getDay() === 0 ? 7 : new Date(year, month, 1).getDay()
-      // 将上月的天数添加到数组中
-      for (let i = curFirstDay; i > 0; i--) {
-        this.dayList.push(new Date(new Date(year, month, 1).setDate(0 - i)))
+      let { year, month } = getYearMonthDay(this.curDate)
+      this.time = getYearMonthDay(this.curDate)
+      // 获取当月第一天
+      let curFirstDay = getDate(year, month, 1)
+      // 获取当月第一天周几
+      let week = curFirstDay.getDay() === 0 ? 7 : curFirstDay.getDay()
+      // 当前开始的天数
+      let startDay = curFirstDay - week * 60 * 60 * 1000 * 24
+      // 循环42天
+      for (let i = 0; i < 42; i++) {
+        this.dayList.push(new Date(startDay + (i * 60 * 60 * 1000 * 24)))
       }
-      // 将当月的天数添加到数组中
-      for (let i = 1; i <= curMonthDays; i++) {
-        this.dayList.push(new Date(year, month, i))
-      }
-      let length = 42 - this.dayList.length
-      // 将下月的天数添加到数组中
-      for (let i = 1; i <= length; i++) {
-        this.dayList.push(new Date(new Date(year, month, 1).setDate(i + curMonthDays)))
-      }
+    },
+    // 判断是否是当月
+    isCurMonth (date) {
+      let { year, month } = getYearMonthDay(this.curDate)
+      let { year: y, month: m } = getYearMonthDay(date)
+      return y === year && month === m
+    },
+    // 是否是今天
+    isToday (date) {
+      let { year, month, day } = getYearMonthDay(new Date())
+      let { year: y, month: m, day: d } = getYearMonthDay(date)
+      return y === year && month === m && day === d
     },
     // 每一列的时间
     getCurColDate (row, col) {
       let index = (row - 1) * 7 + (col - 1)
-      return new Date(this.dayList[index].toString()).getDate()
-    },
-    // 得到年月日
-    getYearMonthDay (val) {
-      return {
-        year: val.getFullYear(),
-        month: val.getMonth(),
-        day: val.getDate()
-      }
+      return new Date(this.dayList[index]).getDate()
     }
   }
 }
@@ -104,6 +129,23 @@ export default {
     text-align: center;
     .col {
       flex: 1;
+      border-radius: 3px;
+      cursor: pointer;
+      user-select: none;
+      box-sizing: border-box;
+      &:hover {
+        border: 1px solid pink;
+      }
+    }
+    .notCurMonth {
+      color: #ccc;
+    }
+    .today {
+      background-color: red;
+      color: #fff;
+    }
+    .isChoosed {
+      border: 1px solid pink;
     }
   }
   .week-row {

@@ -11,7 +11,12 @@ export default {
   name: 'date',
   data () {
     return {
-      curDate: null
+      curDate: new Date()
+    }
+  },
+  watch: {
+    curDate (newVal) {
+      console.log(newVal)
     }
   },
   components: {

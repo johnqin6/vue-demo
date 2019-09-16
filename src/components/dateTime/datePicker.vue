@@ -1,6 +1,6 @@
 <template>
-  <div class="date-picker">
-    <div class="input-content" v-delegation>
+  <div class="date-picker" v-click-outside>
+    <div class="input-content">
       <input
         type="text"
         v-model="innerValue"
@@ -9,14 +9,15 @@
       <i class="icon icon-date"></i>
     </div>
     <transition name="slide">
-      <div class="date-picker-container" v-if="visible">
-        <date-picker-wrap></date-picker-wrap>
+      <div class="date-picker-container" v-show="visible">
+        <date-picker-wrap v-model="curValue"></date-picker-wrap>
       </div>
     </transition>
   </div>
 </template>
 <script>
 import datePickerWrap from './datePickerWrap'
+import { getYearMonthDay } from '../../utils/util'
 
 export default {
   name: 'datePicker',
@@ -29,19 +30,55 @@ export default {
   data () {
     return {
       innerValue: '',
+      curValue: null,
       visible: false
+    }
+  },
+  watch: {
+    curValue (newVal) {
+      if (newVal) {
+        this.$emit('input', newVal)
+        this.innerValue = this.formatDate(newVal)
+        this.close()
+        this.curValue = newVal
+      }
+    }
+  },
+  mounted () {
+    this.innerValue = this.formatDate(this.value)
+    this.curValue = this.value
+  },
+  methods: {
+    getValue (date) {
+      
+    },
+    show () {
+      this.visible = true
+    },
+    close () {
+      this.visible = false
+    },
+    formatDate (val) {
+      let { year, month, day } = getYearMonthDay(val)
+      return `${year}-${month + 1}-${day}`
     }
   },
   components: {
     datePickerWrap
   },
   directives: {
-    delegation: {
-      bind (el, binding) {
+    clickOutside: {
+      bind (el, binding, vnode) {
         el.handle = (e) => {
-          if (el.contains(e.target)) return false
-          if (binding.expression) {
-            binding.value()
+          // 判断面板是否已显示
+          if (el.contains(e.target)) {
+            if (!vnode.context.visible) {
+              vnode.context.show()
+            }
+          } else {
+            if (vnode.context.visible) {
+              vnode.context.close()
+            }
           }
         }
         document.addEventListener('click', el.handle)
@@ -82,7 +119,7 @@ export default {
   position: absolute;
   top: 42px;
   left: 1px;
-  width: 300px;
+  width: 250px;
   height: 260px;
   box-shadow: 1px 1px 1px #ccc, -1px -1px 1px #ccc;
   overflow: hidden;

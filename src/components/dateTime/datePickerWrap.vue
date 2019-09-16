@@ -4,7 +4,7 @@
       <span>&lt;</span>
       <span>&lt;&lt;</span>
       <span>{{ year }}年</span>
-      <span>{{ month }}月</span>
+      <span>{{ month + 1 }}月</span>
       <span>&gt;&gt;</span>
       <span>&gt;</span>
     </div>
@@ -52,9 +52,9 @@ export default {
       this.year = year
       this.month = month
       // 得到当月有多少天
-      let curMonthDays = new Date(year, month, 0).getDate()
+      let curMonthDays = new Date(year, month + 1, 0).getDate()
       // 得到当月第一天星期几
-      let curFirstDay = new Date(year, month, 1).getDay() === 0 ? 7 : new Date(year, month, 1).getDay()
+      let curFirstDay = new Date(year, month + 1, 1).getDay() === 0 ? 7 : new Date(year, month, 1).getDay()
       // 将上月的天数添加到数组中
       for (let i = curFirstDay; i > 0; i--) {
         this.dayList.push(new Date(new Date(year, month, 1).setDate(0 - i)))
@@ -72,12 +72,7 @@ export default {
     // 每一列的时间
     getCurColDate (row, col) {
       let index = (row - 1) * 7 + (col - 1)
-      return this.getDateWithDate(this.dayList[index])
-    },
-    // 得到天数
-    getDateWithDate (val) {
-      let d = new Date(val.toString())
-      return d.getDate()
+      return new Date(this.dayList[index].toString()).getDate()
     },
     // 得到年月日
     getYearMonthDay (val) {

@@ -32,6 +32,11 @@ export default new Router({
       component: () => import('./views/echarts')
     },
     {
+      path: '/directive',
+      name: '自定义指令dome',
+      component: () => import('./views/directive')
+    },
+    {
       path: '/date',
       name: '时间组件示例',
       component: () => import('./views/date/date')

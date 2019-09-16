@@ -19,6 +19,7 @@ export default {
         { title: '城市列表', desc: '城市信息展示, 字母导航', path: '/city' },
         { title: '过渡示例', desc: '过渡示例', path: '/transition' },
         { title: 'echart组件演示', desc: 'echart组件演示', path: '/echart' },
+        { title: '自定义指令demo', desc: '自定义指令demo', path: '/directive' },
         { title: '时间组件示例', desc: '时间组件示例', path: '/date' },
         { title: '口腔检查组件', desc: '口腔检查组件', path: '/dentalSelection' }
       ]

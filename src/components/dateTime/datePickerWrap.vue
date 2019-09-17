@@ -63,7 +63,6 @@ export default {
       return y === year && month === m && day === d
     },
     chooseDate (date) {
-      console.log(date)
       this.$emit('input', date)
     },
     reduceMonth () {
@@ -83,19 +82,23 @@ export default {
         this.time.year = this.time.year + 1
         this.time.month = 0
       }
+      this.curDate = getDate(this.time.year, this.time.month, 2)
+      this.setDayList()
     },
     reduceYear () {
       this.time.year--
+      this.curDate = getDate(this.time.year, this.time.month, 2)
+      this.setDayList()
     },
     addYear () {
       this.time.year++
+      this.curDate = getDate(this.time.year, this.time.month, 2)
+      this.setDayList()
     },
     // 建立时间数组
     setDayList () {
-      console.log(this.curDate)
       // 得到传入的时间或当前时间的年月
       let { year, month } = getYearMonthDay(this.curDate)
-      console.log(year, month)
       this.time = getYearMonthDay(this.curDate)
       // 获取当月第一天
       let curFirstDay = getDate(year, month, 1)
@@ -104,13 +107,14 @@ export default {
       // 当前开始的天数
       let startDay = curFirstDay - week * 60 * 60 * 1000 * 24
       // 循环42天
+      this.dayList = []
       for (let i = 0; i < 42; i++) {
         this.dayList.push(new Date(startDay + (i * 60 * 60 * 1000 * 24)))
       }
     },
     // 判断是否是当月
     isCurMonth (date) {
-      let { year, month } = getYearMonthDay(this.value)
+      let { year, month } = getYearMonthDay(this.curDate)
       let { year: y, month: m } = getYearMonthDay(date)
       return y === year && month === m
     },

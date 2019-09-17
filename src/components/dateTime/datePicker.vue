@@ -35,12 +35,10 @@ export default {
     }
   },
   watch: {
-    curValue (newVal) {
-      if (newVal) {
+    curValue (newVal, oldVal) {
+      if (newVal !== oldVal) {
         this.$emit('input', newVal)
         this.innerValue = this.formatDate(newVal)
-        this.close()
-        this.curValue = newVal
       }
     }
   },

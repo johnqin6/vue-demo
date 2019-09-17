@@ -8,11 +8,7 @@
         class="input-inner">
       <i class="icon icon-date"></i>
     </div>
-    <transition name="slide">
-      <div class="date-picker-container" v-if="visible">
-        <date-picker-wrap v-model="curValue"></date-picker-wrap>
-      </div>
-    </transition>
+    <date-picker-wrap v-model="curValue" v-if="visible"></date-picker-wrap>
   </div>
 </template>
 <script>
@@ -47,6 +43,11 @@ export default {
     this.curValue = this.value
   },
   methods: {
+    // setValue (val) {
+    //   this.innerValue = this.formatDate(val)
+    //   this.curValue = val;
+    //   this.close();
+    // },
     show () {
       this.visible = true
     },
@@ -110,22 +111,5 @@ export default {
     }
   }
 }
-.date-picker-container {
-  position: absolute;
-  top: 42px;
-  left: 1px;
-  width: 250px;
-  height: 260px;
-  box-shadow: 1px 1px 1px #ccc, -1px -1px 1px #ccc;
-  overflow: hidden;
-}
-.slide-enter,
-.slide-leave-to {
-  height: 0;
-  opacity: 0;
-}
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 1s ease;
-}
+
 </style>

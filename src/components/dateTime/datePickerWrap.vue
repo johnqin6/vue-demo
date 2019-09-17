@@ -1,34 +1,36 @@
 <template>
-  <div class="date-picker-wrap">
-    <div class="date-header">
-      <span @click="reduceMonth">&lt;</span>
-      <span @click="reduceYear">&lt;&lt;</span>
-      <span>{{ time.year }}年</span>
-      <span>{{ time.month + 1 }}月</span>
-      <span @click="addYear">&gt;&gt;</span>
-      <span @click="addMonth">&gt;</span>
-    </div>
-    <div class="day-container">
-      <div class="row week-row">
-        <span class="col" v-for="col in weekList" :key="col">
-          {{col}}
-        </span>
+  <transition name="slide">
+    <div class="date-picker-wrap">
+      <div class="date-header">
+        <span @click="reduceMonth">&lt;</span>
+        <span @click="reduceYear">&lt;&lt;</span>
+        <span>{{ time.year }}年</span>
+        <span>{{ time.month + 1 }}月</span>
+        <span @click="addYear">&gt;&gt;</span>
+        <span @click="addMonth">&gt;</span>
       </div>
-      <div class="row" v-for="row in 6" :key="row">
-        <span
-          class="col"
-          :class="[
-            { 'notCurMonth': !isCurMonth(dayList[(row - 1) * 7 + (col - 1)]) },
-            { 'today': isToday(dayList[(row - 1) * 7 + (col - 1)]) },
-            { 'isChoosed': isChoosed(dayList[(row - 1) * 7 + (col - 1)])}
-          ]"
-          @click="chooseDate(dayList[(row - 1) * 7 + (col - 1)])"
-          v-for="col in 7" :key="col + 'a'">
-          {{ getCurColDate(row, col) }}
-        </span>
+      <div class="day-container">
+        <div class="row week-row">
+          <span class="col" v-for="col in weekList" :key="col">
+            {{col}}
+          </span>
+        </div>
+        <div class="row" v-for="row in 6" :key="row">
+          <span
+            class="col"
+            :class="[
+              { 'notCurMonth': !isCurMonth(dayList[(row - 1) * 7 + (col - 1)]) },
+              { 'today': isToday(dayList[(row - 1) * 7 + (col - 1)]) },
+              { 'isChoosed': isChoosed(dayList[(row - 1) * 7 + (col - 1)])}
+            ]"
+            @click="chooseDate(dayList[(row - 1) * 7 + (col - 1)])"
+            v-for="col in 7" :key="col + 'a'">
+            {{ getCurColDate(row, col) }}
+          </span>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 <script>
 import { getYearMonthDay, getDate } from '../../utils/util'
@@ -134,8 +136,13 @@ export default {
 </script>
 <style lang="less" scoped>
 .date-picker-wrap {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 42px;
+  left: 1px;
+  width: 250px;
+  height: 260px;
+  box-shadow: 1px 1px 1px #ccc, -1px -1px 1px #ccc;
+  overflow: hidden;
   .date-header {
     display: flex;
     width: 100%;
@@ -175,5 +182,14 @@ export default {
   .week-row {
     color: #333;
   }
+}
+.slide-enter,
+.slide-leave-to {
+  height: 0;
+  opacity: 0;
+}
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 1s ease;
 }
 </style>

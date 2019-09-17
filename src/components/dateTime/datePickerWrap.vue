@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <!-- <transition name="slide"> -->
     <div class="date-picker-wrap">
       <div class="date-header">
         <span @click="reduceMonth">&lt;</span>
@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-  </transition>
+  <!-- </transition> -->
 </template>
 <script>
 import { getYearMonthDay, getDate } from '../../utils/util'
@@ -190,6 +190,6 @@ export default {
 }
 .slide-enter-active,
 .slide-leave-active {
-  transition: all 1s ease;
+  transition: all .5s ease;
 }
 </style>

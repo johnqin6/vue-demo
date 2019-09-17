@@ -35,6 +35,7 @@ export default {
       if (newVal !== oldVal) {
         this.$emit('input', newVal)
         this.innerValue = this.formatDate(newVal)
+        this.close()
       }
     }
   },

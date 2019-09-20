@@ -16,6 +16,20 @@ export default {
   },
   components: {
     sliderPicture
+  },
+  mounted () {
+    this.showConfirm()
+  },
+  methods: {
+    showConfirm () {
+      this.$confirm({
+        title: '是否关闭confirm弹框?'
+      }).then(confirm => {
+        console.log(confirm)
+      }).catch(cancel => {
+        console.log(cancel)
+      })
+    }
   }
 }
 </script>

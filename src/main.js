@@ -5,12 +5,15 @@ import store from './store'
 import VueLazyLoad from 'vue-lazyload' // 懒加载
 import './plugins/index'
 import directives from './directives'
+import Confirm from './components/confirm'
 
 Vue.use(VueLazyLoad, {
   loading: require('./assets/logo.png')
 })
 
 Vue.use(directives)
+
+Vue.prototype.$confirm = Confirm
 
 Vue.config.productionTip = false
 

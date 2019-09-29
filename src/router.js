@@ -44,7 +44,7 @@ export default new Router({
     {
       path: '/dentalSelection',
       name: '口腔检查组件',
-      component: () => import('./views/dentalSelection/dentalSelection')
+      component: () => import('./views/dentalSelection/dentalSelection1')
     }
   ]
 })

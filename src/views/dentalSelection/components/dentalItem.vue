@@ -39,7 +39,7 @@ export default {
     },
     count: {
       type: Number,
-      default: 5
+      default: 4
     }
   },
   data () {
@@ -115,6 +115,10 @@ export default {
   }
   .active {
     background-color: blue;
+    color: #fff;
+  }
+  .aready_active{
+    background-color: grey;
     color: #fff;
   }
 }

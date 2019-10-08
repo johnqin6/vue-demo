@@ -27,6 +27,11 @@ export default {
     color: {
       type: Array,
       default: () => []
+    },
+    // 饼图类型
+    pieType: {
+      type: String,
+      default: 'center' // left, right,center... 皆为饼图，radius为环形
     }
   },
   data () {
@@ -58,7 +63,7 @@ export default {
             name: '访问来源',
             type: 'pie',
             radius: '55%',
-            center: ['50%', '60%'],
+            [this.pieType]: ['50%', '70%'],
             data: this.dataList,
             itemStyle: {
               normal: {

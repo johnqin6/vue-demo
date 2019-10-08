@@ -13,6 +13,11 @@
       :dataList="pieData.dataList"
       :legend="pieData.legend">
     </pie-echart>
+    <pie-echart
+      pieType="radius"
+      :dataList="pieData.dataList"
+      :legend="pieData.legend">
+    </pie-echart>
   </div>
 </template>
 <script>

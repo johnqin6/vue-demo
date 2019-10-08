@@ -162,14 +162,14 @@ export default {
       }
       let list = []
       let id = parseInt(type)
-      let new_diagnosis = this.handleDiagnosis(this.data9)
+      let diagnosis = this.handleDiagnosis(this.data9)
       for (let i = 0; i < arr.length; i++) {
         list.push({
           name: arr[i],
           id: id * 100 + i,
           type: type,
           isChoose: false,
-          new_diagnosis
+          new_diagnosis: diagnosis
         })
       }
       return list
@@ -304,16 +304,16 @@ export default {
       let choosetooth = []
       for (let i = 0; i < this.chooseList.length; i++) {
         let item = this.chooseList[i]
-        let new_diagnosis = []
+        let area = []
         for (let j = 0; j < item.new_diagnosis.length; j++) {
           if (item.new_diagnosis[j].isChoose) {
-            new_diagnosis.push(item.new_diagnosis[j])
+            area.push(item.new_diagnosis[j])
           }
         }
         let tooth = {}
         tooth.new_positon = this.getposition(item.type)
         tooth.new_tooth = item.name
-        tooth.new_diagnosis = this.filterDiagnosis(new_diagnosis, 'name')
+        tooth.new_diagnosis = this.filterDiagnosis(area, 'name')
         choosetooth.push(tooth)
       }
       var params = {

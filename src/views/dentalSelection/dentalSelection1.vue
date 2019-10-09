@@ -215,6 +215,10 @@ export default {
         if (item.id === id) {
           item.isChoose = !item.isChoose
           if (!item.isChoose) {
+            item.new_diagnosis = item.new_diagnosis.map(ites => {
+              ites.isChoose = false
+              return ites
+            })
             this.curtooth = this.stepTooth
           } else if (item.isChoose) {
             this.stepTooth = this.curtooth
@@ -223,6 +227,7 @@ export default {
         }
         return item
       })
+      console.log(this[`data${type}`])
     },
     handleData (id, isChoose) {
       switch (id) {

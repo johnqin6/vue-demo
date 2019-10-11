@@ -169,6 +169,7 @@ export default {
           id: id * 100 + i,
           type: type,
           isChoose: false,
+          count: 0,
           new_diagnosis: diagnosis
         })
       }
@@ -184,7 +185,7 @@ export default {
           return item
         })
       } else {
-        this.handleChooseData(row.type, row.id, row.isChoose)
+        this.handleChooseData(row)
       }
       let data1 = this.data1.filter(item => item.isChoose)
       let data2 = this.data2.filter(item => item.isChoose)
@@ -205,29 +206,35 @@ export default {
         ...data8
       ]
     },
-    handleChooseData (type, id, isChoose) {
+    handleChooseData (row) {
       let length = this.chooseList.length
-      if (length && isChoose && id !== this.chooseList[length - 1].id) {
-        this.curtooth = id
+      if (length && row.isChoose && row.id !== this.chooseList[length - 1].id) {
+        this.curtooth = row.id
         return
       }
-      this[`data${type}`] = this[`data${type}`].map(item => {
-        if (item.id === id) {
-          item.isChoose = !item.isChoose
-          if (!item.isChoose) {
-            item.new_diagnosis = item.new_diagnosis.map(ites => {
-              ites.isChoose = false
-              return ites
-            })
-            this.curtooth = this.stepTooth
-          } else if (item.isChoose) {
+      this[`data${row.type}`] = this[`data${row.type}`].map(item => {
+        if (item.id === row.id) {
+          if (item.isChoose && !row.count) {
+            item.count++
             this.stepTooth = this.curtooth
-            this.curtooth = id
+            this.curtooth = row.id
+          } else {
+            item.isChoose = !item.isChoose
+            item.count = 0
+            if (!item.isChoose) {
+              item.new_diagnosis = item.new_diagnosis.map(ites => {
+                ites.isChoose = false
+                return ites
+              })
+              this.curtooth = this.stepTooth
+            } else if (item.isChoose) {
+              this.stepTooth = this.curtooth
+              this.curtooth = row.id
+            }
           }
         }
         return item
       })
-      console.log(this[`data${type}`])
     },
     handleData (id, isChoose) {
       switch (id) {

@@ -61,7 +61,7 @@ export default {
     this.computeLay()
   },
   methods: {
-    chooseItem (row) {
+    chooseItem (row, handle) {
       if (this.disabled) return
       this.$emit('chooseItem', row)
     },

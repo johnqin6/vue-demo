@@ -143,18 +143,6 @@ export default {
       this.data1.push(this.data1.shift())
       this.data2.push(this.data2.shift())
     },
-    handleDiagnosis (arr) {
-      let list = []
-      arr.forEach(item => {
-        list.push({
-          name: item.name,
-          id: item.id,
-          type: item.type,
-          isChoose: item.isChoose
-        })
-      })
-      return list
-    },
     // 建立牙齿数据
     setToothData (arr, type, sort) {
       if (sort === 'desc') {
@@ -162,7 +150,7 @@ export default {
       }
       let list = []
       let id = parseInt(type)
-      let diagnosis = this.handleDiagnosis(this.data9)
+      let that = this
       for (let i = 0; i < arr.length; i++) {
         list.push({
           name: arr[i],
@@ -170,7 +158,18 @@ export default {
           type: type,
           isChoose: false,
           count: 0,
-          new_diagnosis: diagnosis
+          new_diagnosis: (function () {
+            let list = []
+            that.data9.forEach(item => {
+              list.push({
+                name: item.name,
+                id: item.id,
+                type: item.type,
+                isChoose: item.isChoose
+              })
+            })
+            return list
+          }())
         })
       }
       return list
@@ -207,6 +206,7 @@ export default {
       ]
     },
     handleChooseData (row) {
+      console.log(row)
       let length = this.chooseList.length
       if (length && row.isChoose && row.id !== this.chooseList[length - 1].id) {
         this.curtooth = row.id
@@ -221,11 +221,11 @@ export default {
           } else {
             item.isChoose = !item.isChoose
             item.count = 0
+            item.new_diagnosis = item.new_diagnosis.map(ites => {
+              ites.isChoose = false
+              return ites
+            })
             if (!item.isChoose) {
-              item.new_diagnosis = item.new_diagnosis.map(ites => {
-                ites.isChoose = false
-                return ites
-              })
               this.curtooth = this.stepTooth
             } else if (item.isChoose) {
               this.stepTooth = this.curtooth

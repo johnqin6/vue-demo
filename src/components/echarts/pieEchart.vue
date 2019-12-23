@@ -57,7 +57,23 @@ export default {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
-        legend: this.legend,
+        // legend: this.legend,
+        legend: {
+          // type: 'scroll',
+          show: true,
+          data: this.legendData,
+          // formatter: function (name) {
+          //   // return echarts.format.truncateText(name, 40, '14px Microsoft Yahei', '…');
+          //   if (name.length > 10) {
+          //     return name.slice(0, 9) + '...'
+          //   } else {
+          //     return name
+          //   }
+          // },
+          tooltip: {
+            show: true
+          }
+        },
         series: [
           {
             name: '访问来源',
@@ -65,11 +81,19 @@ export default {
             radius: '55%',
             [this.pieType]: ['50%', '70%'],
             data: this.dataList,
+            // position: 'top',
+            // bottom: 20,
             itemStyle: {
               normal: {
                 label: {
                   show: true,
-                  formatter: '{b} {d}%'
+                  // position: 'center',
+                  // formatter: '{b} {d}%'
+                  formatter: '{d}%'
+                  // textStyle: {
+                  //   align: "left",
+                  //   baseline: "top"
+                  // }
                 }
               },
               emphasis: {

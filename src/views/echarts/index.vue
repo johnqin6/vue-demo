@@ -13,11 +13,11 @@
       :dataList="pieData.dataList"
       :legend="pieData.legend">
     </pie-echart>
-    <pie-echart
+    <!-- <pie-echart
       pieType="radius"
       :dataList="pieData.dataList"
       :legend="pieData.legend">
-    </pie-echart>
+    </pie-echart> -->
   </div>
 </template>
 <script>
@@ -86,15 +86,18 @@ export default {
       pieData: {
         legend: {
           show: false,
-          data: ['产品A', '产品B', '产品C', '产品D', '产品E', '产品F']
+          data: ['产品产品产品产品产品产品A', '产品产品产品产品产品产品产品B', '产品产品产品产品产品产品产品C', '产品D', '产品E', '产品F', '产品W', '产品EY', '产品X']
         },
         dataList: [
-          { value: 10, name: '产品A' },
-          { value: 15, name: '产品B' },
-          { value: 20, name: '产品C' },
-          { value: 10, name: '产品D' },
-          { value: 25, name: '产品E' },
-          { value: 20, name: '产品F' }
+          { value: 1, name: '产品产品产品产品产品产品A' },
+          { value: 1, name: '产品产品产品产品产品产品产品B' },
+          { value: 2, name: '产品产品产品产品产品产品产品C' },
+          { value: 2, name: '产品产品产品产品产品产品产品D' },
+          { value: 2, name: '产品产品产品产品产品产品产品E' },
+          { value: 20, name: '产品产品产品产品产品产品产品F' },
+          { value: 10, name: '产品产品产品产品产品产品产品W' },
+          { value: 30, name: '产品产品产品产品产品产品产品FY' },
+          { value: 50, name: '产品产品产品产品产品产品产品X' }
         ]
       }
     }

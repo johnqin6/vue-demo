@@ -2,7 +2,10 @@
   <div class="directive">
     <!-- <textarea v-model="copyText" class="content"></textarea>
     <button v-copy="copyText">复制</button> -->
-    <slider-picture></slider-picture>
+    <slider-picture v-show="false"></slider-picture>
+    <baidu-map class="map" center="北京" style="height: 400px;">
+      <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
+    </baidu-map>
   </div>
 </template>
 <script>

@@ -55,21 +55,22 @@ export default {
         // color: '#ff0',
         tooltip: {
           trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
+          formatter: '{a} <br/>{b} : {c} ({d}%)',
+          confine: true // 将 tooltip 框限制在图表的区域内
         },
         // legend: this.legend,
         legend: {
           // type: 'scroll',
           show: true,
           data: this.legendData,
-          // formatter: function (name) {
-          //   // return echarts.format.truncateText(name, 40, '14px Microsoft Yahei', '…');
-          //   if (name.length > 10) {
-          //     return name.slice(0, 9) + '...'
-          //   } else {
-          //     return name
-          //   }
-          // },
+          formatter: function (name) {
+            // return echarts.format.truncateText(name, 40, '14px Microsoft Yahei', '…');
+            if (name.length > 10) {
+              return name.slice(0, 9) + '...'
+            } else {
+              return name
+            }
+          },
           tooltip: {
             show: true
           }

@@ -18,12 +18,23 @@
       :dataList="pieData.dataList"
       :legend="pieData.legend">
     </pie-echart> -->
+    <p>
+      <button @click="qrcode">生成二维码</button>
+      <img :src="qrcodeUlr" width="60" height="60">
+    </p>
+    <div>
+      <button @click="pageImage">将页面生成图片</button>
+      <!-- <img :src="pageImageUlr" width="100"> -->
+      <button class="btn">下载图片</button>
+    </div>
   </div>
 </template>
 <script>
 import barEchart from '../../components/echarts/barEchart'
 import lineEchart from '../../components/echarts/lineEchart'
 import pieEchart from '../../components/echarts/pieEchart'
+import QRCode from 'qrcode'
+import html2canvas from 'html2canvas'
 
 export default {
   components: {
@@ -33,6 +44,8 @@ export default {
   },
   data () {
     return {
+      qrcodeUlr: '',
+      // pageImageUlr: '',
       barData: {
         xData: ['产品A', '产品B', '产品C', '产品D', '产品E', '产品F'],
         dataList: [212, 215, 255, 65, 750, 325]
@@ -106,6 +119,47 @@ export default {
     setTimeout(() => {
       this.barData.dataList = [300, 215, 500, 65, 750, 25]
     }, 2000)
+  },
+  methods: {
+    async qrcode () {
+      // 使用qrcode生成二维码
+      const options = {}
+      const url = window.location.href
+      try {
+        this.qrcodeUlr = await QRCode.toDataURL(url, options)
+        console.log(this.qrcodeUlr)
+      } catch (err) {
+        console.error(err)
+      }
+    },
+    // 将页面生成图片
+    async pageImage () {
+      // 简单使用
+      // html2canvas(document.body).then((canvas) => {
+      //   console.log(canvas)
+      //   document.body.appendChild(canvas)
+      // })
+      // 生成清晰的高倍图
+      const scaleSize = 2
+      const newCanvas = document.createElement('canvas')
+      // const target = document.querySelector('body')
+      const target = document.body
+      const width = parseInt(window.getComputedStyle(target).width)
+      const height = parseInt(window.getComputedStyle(target).height)
+      console.log(width, height)
+      newCanvas.width = width * scaleSize
+      newCanvas.height = height * scaleSize
+      newCanvas.style.width = width + 'px'
+      newCanvas.style.height = height + 'px'
+      const context = newCanvas.getContext('2d')
+      context.scale(scaleSize, scaleSize)
+      html2canvas(document.body, { canvas: newCanvas }).then(canvas => {
+        // 简单的通过超链接设置下载功能
+        console.log(canvas)
+        document.body.appendChild(canvas)
+        document.querySelector('.btn').setAttribute('href', canvas.toDataURL())
+      })
+    }
   }
 }
 </script>

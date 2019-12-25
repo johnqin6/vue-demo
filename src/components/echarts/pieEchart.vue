@@ -55,8 +55,15 @@ export default {
         // color: '#ff0',
         tooltip: {
           trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)',
-          confine: true // 将 tooltip 框限制在图表的区域内
+          // formatter: '{a} <br/>{b} : {c} ({d}%)',
+          confine: true, // 将 tooltip 框限制在图表的区域内
+          formatter: (params) => {
+            if (params.name && params.name.length > 20) {
+              params.name = this.cutWordWrap(params.name, 20)
+            }
+            let result = params.name + ' : ' + params.value
+            return result
+          }
         },
         // legend: this.legend,
         legend: {
@@ -107,6 +114,17 @@ export default {
         ]
       }
       console.log(this.options)
+    },
+    // 截取n个字段为一行
+    cutWordWrap (value, n) {
+      let str = ''
+      for (let i = 0; i < value.length; i++) {
+        str += value[i]
+        if ((i + 1) % n === 0 && i !== 0) {
+          str += '<br/>'
+        }
+      }
+      return str
     }
   },
   components: {

@@ -92,7 +92,9 @@ export default {
             label: {
               normal: {
                 show: true,
-                position: 'top',
+                // position: 'top',
+                position: [0, -10],
+                rotate: '45', // 斜着显示
                 color: '#333'
               }
             },

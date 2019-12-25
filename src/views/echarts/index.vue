@@ -27,6 +27,9 @@
       <!-- <img :src="pageImageUlr" width="100"> -->
       <button class="btn">下载图片</button>
     </div>
+    <div class="footer">
+      <div class="gotop" v-show="gotop" @click="toTop">Top</div>
+    </div>
   </div>
 </template>
 <script>
@@ -45,7 +48,7 @@ export default {
   data () {
     return {
       qrcodeUlr: '',
-      // pageImageUlr: '',
+      gotop: false,
       barData: {
         xData: ['产品A', '产品B', '产品C', '产品D', '产品E', '产品F'],
         dataList: [212, 215, 255, 65, 750, 325]
@@ -119,6 +122,8 @@ export default {
     setTimeout(() => {
       this.barData.dataList = [300, 215, 500, 65, 750, 25]
     }, 2000)
+    // 此处true需要加上，不加滚动事件可能绑定不成功
+    window.addEventListener('scroll', this.handleScroll, true)
   },
   methods: {
     async qrcode () {
@@ -159,7 +164,33 @@ export default {
         document.body.appendChild(canvas)
         document.querySelector('.btn').setAttribute('href', canvas.toDataURL())
       })
+    },
+    handleScroll () {
+      let scolltop = document.documentElement.scrollTop || document.body.scrollTop
+      scolltop > 30 ? (this.gotop = true) : (this.gotop = false)
+    },
+    toTop () {
+      let top = document.documentElement.scrollTop || document.body.scrollTop
+      const timeTop = setInterval(() => {
+        document.body.scrollTop = document.documentElement.scrollTop = top -= 50
+        if (top <= 0) {
+          clearInterval(timeTop)
+        }
+      }, 10)
     }
   }
 }
 </script>
+<style scoped>
+.footer .gotop {
+  text-align: center;
+  position: fixed;
+  right: 50px;
+  bottom: 30px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  background: white;
+  color: #000000;
+}
+</style>
